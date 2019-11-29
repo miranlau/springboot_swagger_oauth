@@ -1,0 +1,37 @@
+= Alarm Management Rest API
+
+
+[[_overview]]
+== Overview
+Rest API Doc for Alarm Management
+
+
+=== Version information
+[%hardbreaks]
+__Version__ : 1.0.0
+
+
+=== Contact information
+[%hardbreaks]
+__Contact__ : Admin
+__Contact Email__ : admin@example.com
+
+
+=== License information
+[%hardbreaks]
+__Terms of service__ : http://www.example.com/
+
+
+=== URI scheme
+[%hardbreaks]
+__Host__ : localhost
+__BasePath__ : /
+
+
+=== Tags
+
+* Alarm : Alarm Controller
+* AlarmHistory : Alarm History Controller
+
+
+

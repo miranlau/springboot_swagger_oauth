@@ -1,0 +1,24 @@
+
+[[_securityscheme]]
+== Security
+
+[[_oauth2schema]]
+=== oauth2schema
+[%hardbreaks]
+__Type__ : oauth2
+__Flow__ : password
+__Token URL__ : http://127.0.0.1:8080/tni-api/oauth/token
+
+
+[options="header", cols=".^3a,.^17a"]
+|===
+|Name|Description
+|create|create all
+|query|query all
+|update|update all
+|delete|delete all
+|trust|trust all
+|===
+
+
+

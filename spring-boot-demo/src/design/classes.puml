@@ -1,0 +1,68 @@
+@startuml
+
+top to bottom direction
+
+package com.tieto.tni.rest.controller {
+    abstract class BaseController
+    class AlarmController
+}
+
+package com.tieto.tni.rest.entity {
+    class Alarm
+    enum AlarmStatus
+    enum AlarmSeverity
+}
+
+package com.tieto.tni.rest.service {
+    interface AlarmService
+    class AlarmServiceImpl
+}
+
+package com.tieto.tni.rest.mapper {
+    interface AlarmMapper
+}
+
+package com.tieto.tni.rest.exception {
+    class ServiceException
+}
+
+package com.tieto.tni.rest.docs {
+    class SwaggerConfig
+}
+
+package com.tieto.tni.rest.security {
+    class SecurityConfig
+}
+
+package com.tieto.tni.rest.log {
+    class TraceLoggingAspect
+}
+
+package com.tieto.tni.rest.util {
+    class DateFormatter
+    class JwtTokenUtil
+}
+
+class ResponseEntity
+
+
+BaseController <|-- AlarmController
+AlarmService <|-- AlarmServiceImpl
+ResponseEntity .. AlarmController
+AlarmStatus .. AlarmServiceImpl
+AlarmSeverity .. AlarmServiceImpl
+Alarm .. AlarmServiceImpl
+
+Alarm .. AlarmController
+AlarmServiceImpl .. AlarmController
+AlarmMapper .. AlarmServiceImpl
+ServiceException .. AlarmServiceImpl
+
+AlarmController -[hidden]- SwaggerConfig
+AlarmController -[hidden]- SecurityConfig
+AlarmController -[hidden]- TraceLoggingAspect
+AlarmController -[hidden]- DateFormatter
+
+ServiceException -[hidden]- AlarmService
+
+@enduml

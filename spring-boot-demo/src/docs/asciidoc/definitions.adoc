@@ -1,0 +1,71 @@
+
+[[_definitions]]
+== Definitions
+
+[[_alarm]]
+=== Alarm
+Alarm entity
+
+
+[options="header", cols=".^3a,.^11a,.^4a"]
+|===
+|Name|Description|Schema
+|**auid** +
+__optional__|**Example** : `"string"`|string
+|**id** +
+__optional__|**Example** : `0`|integer (int64)
+|**instanceId** +
+__optional__|**Example** : `0`|integer (int32)
+|**json** +
+__optional__|**Example** : `"string"`|string
+|**module** +
+__optional__|**Example** : `"string"`|string
+|**name** +
+__optional__|**Example** : `"string"`|string
+|**severity** +
+__optional__|**Example** : `"string"`|enum (INFO, FATAL, WARNING)
+|**status** +
+__optional__|**Example** : `"string"`|enum (RAISED, CLEARED, MANUAL_CLEARED)
+|**ts** +
+__optional__|**Example** : `"string"`|string
+|===
+
+
+[[_baseresult]]
+=== BaseResult
+Response Entity
+
+
+[options="header", cols=".^3a,.^11a,.^4a"]
+|===
+|Name|Description|Schema
+|**code** +
+__required__|Response code +
+**Example** : `0`|integer (int32)
+|**data** +
+__optional__|Response data +
+**Example** : `"object"`|object
+|**msg** +
+__required__|Response message +
+**Example** : `"succeed"`|string
+|===
+
+
+[[_response]]
+=== Response
+Response wrapper model
+
+
+[options="header", cols=".^3a,.^11a,.^4a"]
+|===
+|Name|Description|Schema
+|**entity** +
+__optional__|**Example** : `"object"`|object
+|**mediaType** +
+__optional__|**Example** : `"string"`|string
+|**status** +
+__optional__|**Example** : `0`|integer (int32)
+|===
+
+
+

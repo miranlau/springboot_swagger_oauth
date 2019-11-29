@@ -1,0 +1,20 @@
+@startuml
+
+actor client
+
+boundary controller
+control business
+entity dataMapping
+database DB
+
+client -> controller : HTTP request
+controller -> business : invoke
+business -> dataMapping : invoke
+dataMapping -> DB : read/write
+
+DB -> dataMapping : result
+dataMapping -> business : result
+business -> controller : result
+controller -> client : HTTP response
+
+@enduml

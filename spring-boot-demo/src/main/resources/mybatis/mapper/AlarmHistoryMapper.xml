@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tieto.springbootdemo.mapper.AlarmHistoryMapper" >
+    <resultMap id="BaseResultMap" type="com.tieto.springbootdemo.model.AlarmHistory" >
+        <id column="id" property="id" />
+        <result column="alarm_id" property="alarmId" />
+        <result column="ts" property="ts" />
+        <result column="action" property="action" />
+        <result column="details" property="details" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, ts, alarm_id, action, details
+    </sql>
+
+    <insert id="insert" parameterType="com.tieto.springbootdemo.model.AlarmHistory">
+        INSERT INTO
+        alarm_history(alarm_id, ts, action, details)
+        VALUES
+        (#{alarmId}, #{ts}, #{action}, #{details})
+    </insert>
+
+    <update id="update" parameterType="com.tieto.springbootdemo.model.AlarmHistory" >
+        UPDATE
+        alarm_history
+        SET
+        <if test="details != null">details = #{details},</if>
+        <if test="action != null">action = #{action}</if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        DELETE FROM
+        alarm_history
+        WHERE
+        id = #{id}
+    </delete>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List"></include>
+        FROM alarm_history
+    </select>
+
+</mapper>

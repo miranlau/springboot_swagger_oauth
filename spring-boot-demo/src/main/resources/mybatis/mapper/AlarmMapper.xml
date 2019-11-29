@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tieto.springbootdemo.mapper.AlarmMapper" >
+    <resultMap id="BaseResultMap" type="com.tieto.springbootdemo.model.Alarm" >
+        <id column="id" property="id" />
+        <result column="ts" property="ts" />
+        <result column="name" property="name" />
+        <result column="module" property="module" />
+        <result column="instance_id" property="instanceId" />
+        <result column="auid" property="auid" />
+        <result column="json" property="json" />
+        <result column="status" property="status" javaType="com.tieto.springbootdemo.entity.enums.AlarmStatus"/>
+        <result column="severity" property="severity" javaType="com.tieto.springbootdemo.entity.enums.Severity" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, ts, name, module, instance_id, auid, json, status, severity
+    </sql>
+
+    <insert id="insert" parameterType="com.tieto.springbootdemo.model.Alarm">
+        INSERT INTO
+        alarm(name, ts, module, instance_id, auid, json, status, severity)
+        VALUES
+        (#{name}, #{ts}, #{module}, #{instanceId}, #{auid}, #{json}, #{status}, #{severity})
+    </insert>
+
+    <update id="update" parameterType="com.tieto.springbootdemo.model.Alarm" >
+        UPDATE
+        alarm
+        SET
+        <if test="ts != null">ts = #{ts},</if>
+        <if test="name != null">name = #{name},</if>
+        <if test="module != null">module = #{module},</if>
+        <if test="instanceId != null">instance_id = #{instanceId},</if>
+        <if test="auid != null">auid = #{auid},</if>
+        <if test="json != null">json = #{json},</if>
+        <if test="status != null">status = #{status},</if>
+        <if test="severity != null">severity = #{severity}</if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long" >
+        DELETE FROM
+        alarm
+        WHERE
+        id = #{id}
+    </delete>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        SELECT
+            id, ts, name, module, instance_id, auid, json, status, severity
+        FROM alarm
+    </select>
+
+    <select id="getAlarmModules" resultMap="BaseResultMap">
+        SELECT
+            id, module, ts
+        FROM alarm ORDER BY ts DESC
+    </select>
+
+    <select id="getModulesWithActiveAlarms" resultMap="BaseResultMap">
+        SELECT DISTINCT
+            id, module, ts
+        FROM alarm
+        WHERE
+            id in (SELECT MAX(id) FROM alarm GROUP BY module, auid, instance_id)
+        AND status=1
+        ORDER BY ts DESC
+    </select>
+
+    <select id="countActiveAlarms" resultType="java.lang.Long">
+        SELECT DISTINCT
+            COUNT(id)
+        FROM alarm
+        WHERE
+            id in (SELECT MAX(id) FROM alarm GROUP BY module, auid, instance_id)
+        AND name like #{searchName}
+        AND module=#{moduleName}
+        AND status=1
+    </select>
+
+    <select id="getActiveAlarms" resultMap="BaseResultMap">
+        SELECT DISTINCT
+            id, json, ts
+        FROM alarm
+        WHERE
+            id in (SELECT MAX(id) FROM alarm GROUP BY module, auid, instance_id)
+        AND name like #{searchName}
+        AND module=#{moduleName}
+        AND status=1
+        ORDER BY ts DESC
+        LIMIT #{position},#{perPage}
+    </select>
+
+    <select id="countAlarms" resultType="java.lang.Long">
+        SELECT
+            COUNT(id)
+        FROM alarm
+        WHERE name like #{searchName}
+        AND module=#{moduleName}
+    </select>
+
+    <select id="getAlarms" resultMap="BaseResultMap">
+        SELECT DISTINCT
+            id, json, ts
+        FROM alarm
+        WHERE name like #{searchName}
+        AND module=#{moduleName}
+        ORDER BY ts DESC
+        LIMIT #{position},#{perPage}
+    </select>
+
+    <delete id="deleteAlarms" parameterType="java.lang.String" >
+        DELETE FROM
+        alarm
+        WHERE
+        <choose>
+            <when test="upto != null">
+                STR_TO_DATE(ts,'%Y-%m-%d %T:%f') &lt; STR_TO_DATE(#{upto},'%Y-%m-%d %T:%f')
+            </when>
+            <otherwise>
+                1 &lt; 1
+            </otherwise>
+        </choose>
+    </delete>
+
+    <delete id="deleteAlarmsByStatus" parameterType="java.lang.String" >
+        DELETE FROM
+        alarm
+        WHERE
+        status = #{status}
+    </delete>
+
+    <select id="queryById" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM alarm
+        WHERE id = #{id}
+    </select>
+
+    <select id="queryByModule" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM alarm
+        WHERE id = #{id}
+    </select>
+
+</mapper>
